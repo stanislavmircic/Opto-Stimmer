@@ -95,7 +95,7 @@ id <BYBRoboRoachManagerDelegate> delegate;
     data = self.activeRoboRoach.frequency.integerValue;
     [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_FREQUENCY_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
 
-    data = self.activeRoboRoach.pulseWidth.integerValue;
+    data = (int)(100.0 * (self.activeRoboRoach.pulseWidth.floatValue/(1000.0/self.activeRoboRoach.frequency.floatValue)));
     [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_PULSEWIDTH_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
 
     data = self.activeRoboRoach.duration.integerValue/5; //Note we need to divide by 5ms.
@@ -304,7 +304,8 @@ id <BYBRoboRoachManagerDelegate> delegate;
             {
                 char value;
                 [characteristic.value getBytes:&value length:1];
-                self.activeRoboRoach.pulseWidth = [NSNumber numberWithUnsignedChar:(unsigned char)value];
+                int msLength = (int)((((float)(int)value)/100.0f) * (1000.0/[self.activeRoboRoach.frequency floatValue]));
+                self.activeRoboRoach.pulseWidth = [NSNumber numberWithInt:msLength];
                 NSLog(@"[peripheral] didUpdateValueForChar PW   (%s, %@)", [self CBUUIDToString:characteristic.UUID], [NSNumber numberWithUnsignedChar:(unsigned char)value]);
                 break;
             }
