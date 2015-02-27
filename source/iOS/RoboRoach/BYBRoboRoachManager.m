@@ -88,17 +88,34 @@ id <BYBRoboRoachManagerDelegate> delegate;
     }
 }
 
+
+//
+// Units are converted for sending it over BT so that it fits in one byte per parameter
+//
+// One unit of frequency equals 0.5Hz
+// one unit of pulse width equals (100/255)% of period of impuls
+// one unit of duration equals 8ms
+//
 -(void) sendUpdatedSettingsToActiveRoboRoach {
     
     UInt8 data;
     
-    data = self.activeRoboRoach.frequency.integerValue;
+    //Units are converted for sending it over BT so that it fits in one byte per parameter
+    
+    //One unit of frequency equals 0.5Hz
+    data = (UInt8)roundf((self.activeRoboRoach.frequency.floatValue*2.0f));
+    if(data<1)
+    {
+        data  = 1;
+    }
     [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_FREQUENCY_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
 
-    data = (int)(100.0 * (self.activeRoboRoach.pulseWidth.floatValue/(1000.0/self.activeRoboRoach.frequency.floatValue)));
+    //one unit of pulse width equals (100/255)% of period of impuls
+    data = (int)(255.0 * (self.activeRoboRoach.pulseWidth.floatValue/(1000.0/self.activeRoboRoach.frequency.floatValue)));
     [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_PULSEWIDTH_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
 
-    data = self.activeRoboRoach.duration.integerValue/5; //Note we need to divide by 5ms.
+    //one unit of duration equals 8ms
+    data = self.activeRoboRoach.duration.integerValue/8; //Note we need to divide by 8ms.
     [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_DURATION_IN_5MS_INTERVALS_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
     
     data = self.activeRoboRoach.randomMode.integerValue;
@@ -296,7 +313,7 @@ id <BYBRoboRoachManagerDelegate> delegate;
             {
                 char value;
                 [characteristic.value getBytes:&value length:1];
-                self.activeRoboRoach.frequency = [NSNumber numberWithUnsignedChar:(unsigned char)value];
+                self.activeRoboRoach.frequency = [NSNumber numberWithFloat:(((float)(int)value)*0.5f)];
                 NSLog(@"[peripheral] didUpdateValueForChar Freq (%s, %@)", [self CBUUIDToString:characteristic.UUID], [NSNumber numberWithUnsignedChar:(unsigned char)value]);
                 break;
             }
@@ -304,7 +321,7 @@ id <BYBRoboRoachManagerDelegate> delegate;
             {
                 char value;
                 [characteristic.value getBytes:&value length:1];
-                int msLength = (int)((((float)(int)value)/100.0f) * (1000.0/[self.activeRoboRoach.frequency floatValue]));
+                int msLength = (int)((((float)(int)value)/255.0f) * (1000.0/[self.activeRoboRoach.frequency floatValue]));
                 self.activeRoboRoach.pulseWidth = [NSNumber numberWithInt:msLength];
                 NSLog(@"[peripheral] didUpdateValueForChar PW   (%s, %@)", [self CBUUIDToString:characteristic.UUID], [NSNumber numberWithUnsignedChar:(unsigned char)value]);
                 break;
@@ -314,8 +331,8 @@ id <BYBRoboRoachManagerDelegate> delegate;
                 char value;
                 [characteristic.value getBytes:&value length:1];
                 NSNumber *numberOf5msSteps = [NSNumber numberWithUnsignedChar:(unsigned char)value];
-                self.activeRoboRoach.duration = [NSNumber numberWithInt:[numberOf5msSteps integerValue] * 5]; //Note: in 5ms steps.
-                NSLog(@"[peripheral] didUpdateValueForChar Duration (%s, %@ *5ms = %@)", [self CBUUIDToString:characteristic.UUID], [NSNumber numberWithUnsignedChar:(unsigned char)value], self.activeRoboRoach.duration);
+                self.activeRoboRoach.duration = [NSNumber numberWithInt:[numberOf5msSteps intValue] * 8]; //Note: in 5ms steps.
+                NSLog(@"[peripheral] didUpdateValueForChar Duration (%s, %@ *8ms = %@)", [self CBUUIDToString:characteristic.UUID], [NSNumber numberWithUnsignedChar:(unsigned char)value], self.activeRoboRoach.duration);
                 break;
             }
             case BYB_ROBOROACH_CHAR_RANDOMMODE_UUID:

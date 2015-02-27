@@ -8,6 +8,7 @@
 
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <Foundation/Foundation.h>
+#define MAX_STIMULATION_TIME 2000.0
 
 #ifdef TESTFLIGHT
 #import "TestFlight.h"

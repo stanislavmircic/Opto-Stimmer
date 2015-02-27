@@ -148,8 +148,6 @@ BOOL isConnected = NO;
     
     
     GPUImageView *filterView = (GPUImageView *)self.view;
-    //    filterView.fillMode = kGPUImageFillModeStretch;
-    //    filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
     
 
     
@@ -161,27 +159,7 @@ BOOL isConnected = NO;
     blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
     blendFilter.mix = 1.0;
     infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,sWidth, sHeight)];
-  /*  switch (deviceSize) {
-        case iPhone4:
-            infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,320.0, 480.0)];
 
-            break;
-        case iPhone5:
-            infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,640.0, 1136.0)];
-            break;
-        case iPhone6:
-            infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,750.0, 1334.0)];
-
-            break;
-        case iPhone6Plus:
-            infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,1080.0, 1920.0)];
-
-            break;
-        default:
-            infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,320.0, 640.0)];
-
-            break;
-    }*/
     
     float xPosition = (50.0/640.0)*sWidth;
     float yStep = (30.0/1136.0)*sHeight;
@@ -280,24 +258,6 @@ BOOL isConnected = NO;
     
     
     movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(sWidth, sHeight)];
-    
-   /* switch (deviceSize) {
-        case iPhone4:
-            movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(480.0, 640.0)];
-            break;
-        case iPhone5:
-            movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 1136.0)];
-            break;
-        case iPhone6:
-            movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(720.0, 1280.0)];
-            break;
-        case iPhone6Plus:
-            movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(1080.0, 1920.0)];
-            break;
-        default:
-            movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(480.0, 640.0)];
-            break;
-    }*/
     
     movieWriter.encodingLiveVideo = YES;
     movieWriter.delegate = self;
@@ -470,7 +430,17 @@ BOOL isConnected = NO;
     {
         widthLabel.text =[NSString stringWithFormat:@"Pulse: %d ms",[rr.activeRoboRoach.pulseWidth intValue]];
         durationLabel.text = [NSString stringWithFormat:@"Dur: %d ms",[rr.activeRoboRoach.duration intValue]];
-        freqLabel.text = [NSString stringWithFormat:@"Freq: %d Hz",[rr.activeRoboRoach.frequency intValue]];
+        
+        
+        if([rr.activeRoboRoach.frequency floatValue]<1.0f)
+        {
+            freqLabel.text = [NSString stringWithFormat:@"Freq: %.01f Hz",[rr.activeRoboRoach.frequency floatValue]];
+        }
+        else
+        {
+           freqLabel.text = [NSString stringWithFormat:@"Freq: %i Hz",[rr.activeRoboRoach.frequency intValue]];
+        }
+
         widthLabel.hidden = NO;
         durationLabel.hidden = NO;
         freqLabel.hidden = NO;
@@ -723,18 +693,6 @@ BOOL isConnected = NO;
     
     isConnected = YES;
     
-    //[connectButton setTitle:@"Disconnect" forState:UIControlStateNormal];
-    //[connectButton setEnabled:YES];
-    
-    // [bookmarkButton setEnabled:YES];
-   // [stimulationSettingsButton setEnabled:YES];
-    // [backpackImage setAlpha:1];
-    
-    
-    //[connectButtonBar setTitle:@"Disconnect"];
-    //[connectButtonBar setEnabled:YES];
-    
-   // [self.sessionBTN setHidden:NO];
     [connectBTN setEnabled:YES];
     currentState = STATE_CONNECTED;
     [self refreshViewState];

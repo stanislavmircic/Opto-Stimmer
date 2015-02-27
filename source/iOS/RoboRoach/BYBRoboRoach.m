@@ -16,7 +16,7 @@ bool turnCommandActive = NO;
     self.isLoadingParameters = 0;
     self.frequency = [NSNumber numberWithInt:3];
     self.pulseWidth = [NSNumber numberWithInt:9];
-    self.duration = [NSNumber numberWithInt:1000];
+    self.duration = [NSNumber numberWithInt:1000.0];
     self.randomMode = [NSNumber numberWithInt:0];
     self.gain = [NSNumber numberWithInt:100];
     

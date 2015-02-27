@@ -36,6 +36,10 @@ SCTextFieldCell *hardwareCell;
 {
     [super viewDidLoad];
     
+    [freqSlider setEnabled:YES];
+    [pulseWidthSlider setEnabled:YES];
+
+    
     [UIApplication sharedApplication].statusBarHidden = YES;
     //self.roboRoach.duration = [NSNumber numberWithDouble:[self.roboRoach.numberOfPulses  doubleValue] * 1000 / [self.roboRoach.frequency doubleValue]];
     
@@ -56,7 +60,7 @@ SCTextFieldCell *hardwareCell;
     
     durationSlider = [SCSliderCell cellWithText:@"Duration" boundObject:self.roboRoach boundPropertyName:@"duration"  ];
     durationSlider.slider.minimumValue = 10;
-    durationSlider.slider.maximumValue = 1000;
+    durationSlider.slider.maximumValue = (float)MAX_STIMULATION_TIME;
     [stimulationSection addCell:durationSlider];
     
    /* randomCell = [SCSwitchCell cellWithText:@"Random Mode" boundObject:self.roboRoach boundPropertyName:@"randomMode"];
@@ -64,8 +68,8 @@ SCTextFieldCell *hardwareCell;
     */
     
     freqSlider = [SCSliderCell cellWithText:@"Frequency" boundObject:self.roboRoach boundPropertyName:@"frequency"  ];
-    freqSlider.slider.minimumValue = 1;
-    freqSlider.slider.maximumValue = 150;
+    freqSlider.slider.minimumValue = 0.5;
+    freqSlider.slider.maximumValue = 125;
     [stimulationSection addCell:freqSlider];
     
     pulseWidthSlider = [SCSliderCell cellWithText:@"Pulse Width" boundObject:self.roboRoach boundPropertyName:@"pulseWidth"  ];
@@ -112,6 +116,9 @@ SCTextFieldCell *hardwareCell;
     
 }
 
+
+
+
 - (void)redrawStimulation
 {
     //NSLog(@"Creating image");
@@ -137,8 +144,16 @@ SCTextFieldCell *hardwareCell;
     CGContextAddLineToPoint(context, STIMLINE_OFFSET, STIMLINE_BASE);
     //NSLog(@"self.roboRoach.numberOfPulses: %@", self.roboRoach.numberOfPulses);
     
-    float pw = [self.roboRoach.pulseWidth floatValue]/1000.0;
-    float period = 1.0/[self.roboRoach.frequency floatValue];
+    float pw;
+    if([self.roboRoach.pulseWidth floatValue]>[self.roboRoach.duration floatValue])
+    {
+        self.roboRoach.pulseWidth = self.roboRoach.duration;
+    }
+
+    pw  = [self.roboRoach.pulseWidth floatValue]/MAX_STIMULATION_TIME;
+    
+    
+    float period = (1.0/[self.roboRoach.frequency floatValue])*((float)(1000.0/MAX_STIMULATION_TIME));
     //NSLog(@"pw: %f", pw);
     //NSLog(@"period: %f", period);
     
@@ -147,16 +162,9 @@ SCTextFieldCell *hardwareCell;
     
     float totalDuration = 0;
     
-    while( totalDuration < [self.roboRoach.duration floatValue]/1000.0)
+    while( totalDuration < [self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)
     {
-        
-        if ( [self.roboRoach.randomMode boolValue]){
-            pw = (BYB_MIN_STIMULATE_PULSE_WIDTH + arc4random() % (BYB_MAX_STIMULATE_PULSE_WIDTH - BYB_MIN_STIMULATE_PULSE_WIDTH));
-            pw = pw/1000.0;
-            period = (BYB_MIN_STIMULATE_PERIOD  + arc4random() % (BYB_MAX_STIMULATE_PERIOD - BYB_MIN_STIMULATE_PERIOD ));
-            period = period/1000.0;
-        }
-        
+
         totalDuration += period;
         
         //Go Up
@@ -164,27 +172,26 @@ SCTextFieldCell *hardwareCell;
         
         //Go Over
         x += pw*POINTS_TO_SEC;
-       /* if(x>=([self.roboRoach.duration floatValue]/1000.0)*POINTS_TO_SEC)
+
+        if(x>=(([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC + STIMLINE_OFFSET))
         {
-            x =([self.roboRoach.duration floatValue]/1000.0)*POINTS_TO_SEC;
-             CGContextAddLineToPoint(context, x, STIMLINE_BASE - ((STIMLINE_BASE - STIMLINE_PEAK) * gain));
-            CGContextAddLineToPoint(context, x, STIMLINE_BASE);
+             x =([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC +STIMLINE_OFFSET;
+            CGContextAddLineToPoint(context, x, STIMLINE_BASE - ((STIMLINE_BASE - STIMLINE_PEAK) * gain));
             break;
         }
         else
-        {*/
-             CGContextAddLineToPoint(context, x, STIMLINE_BASE - ((STIMLINE_BASE - STIMLINE_PEAK) * gain));
-        //}
-       
+        {
+            CGContextAddLineToPoint(context, x, STIMLINE_BASE - ((STIMLINE_BASE - STIMLINE_PEAK) * gain));
+        }
         
         //Go Down
         CGContextAddLineToPoint(context, x, STIMLINE_BASE);
         //Go to end
 
         x += (period - pw)*POINTS_TO_SEC;
-        if(x>=([self.roboRoach.duration floatValue]/1000.0)*POINTS_TO_SEC)
+       if(x>=(([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC + STIMLINE_OFFSET))
         {
-            x =([self.roboRoach.duration floatValue]/1000.0)*POINTS_TO_SEC +STIMLINE_OFFSET;
+            x =([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC +STIMLINE_OFFSET;
             CGContextAddLineToPoint(context, x, STIMLINE_BASE);
             break;
         }
@@ -193,14 +200,7 @@ SCTextFieldCell *hardwareCell;
             CGContextAddLineToPoint(context, x, STIMLINE_BASE);
         }
         
-        
-        //NSLog(@"Line: [%f.%f]", (i * period)*POINTS_TO_SEC + pw*POINTS_TO_SEC, STIMLINE_PEAK);
-        
     }
-    
-    //        stimulationPeriod = osal_rand() % (BYB_MAX_STIMULATE_PERIOD - BYB_MIN_STIMULATE_PERIOD) + BYB_MIN_STIMULATE_PERIOD;
-    //stimulationPulseWidth = osal_rand() % (BYB_MAX_STIMULATE_PULSE_WIDTH - BYB_MIN_STIMULATE_PULSE_WIDTH) + BYB_MIN_STIMULATE_PULSE_WIDTH;
-
     
     NSString *strDisplay;
     
@@ -208,8 +208,17 @@ SCTextFieldCell *hardwareCell;
         strDisplay = [NSString stringWithFormat:@"Dur=[%i ms] Freq = [Random] ", [self.roboRoach.duration intValue] ];
     }
     else{
-    strDisplay = [NSString stringWithFormat:@"Dur=[%i ms] Freq = [%i Hz], Pulse = [%i ms] ", [self.roboRoach.duration intValue],[self.roboRoach.frequency intValue], [self.roboRoach.pulseWidth intValue] ];
+        if([self.roboRoach.frequency floatValue]<1.0f)
+        {
+            strDisplay = [NSString stringWithFormat:@"Dur=[%i ms] Freq = [%.01f Hz], Pulse = [%i ms] ", [self.roboRoach.duration intValue],[self.roboRoach.frequency floatValue], [self.roboRoach.pulseWidth intValue] ];
+            
+        }
+        else
+        {
+            strDisplay = [NSString stringWithFormat:@"Dur=[%i ms] Freq = [%i Hz], Pulse = [%i ms] ", [self.roboRoach.duration intValue],[self.roboRoach.frequency intValue], [self.roboRoach.pulseWidth intValue] ];
+        }
     }
+    
     CGAffineTransform transform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
     CGContextSetTextMatrix(context, transform);
     
@@ -241,26 +250,8 @@ SCTextFieldCell *hardwareCell;
     self.roboRoach.duration = [NSNumber numberWithFloat:roundedDuration];
     
     
-    if ( self.roboRoach.randomMode.boolValue ){
-        [freqSlider setEnabled:NO];
-        [pulseWidthSlider setEnabled:NO];
-        
-        //This is a hack.  The random range is around 55Hz...
-        //Bug...  this always gets set to 1s.  Why?
-        //self.roboRoach.numberOfPulses = [NSNumber numberWithDouble:[self.roboRoach.duration doubleValue] * 55 / 1000];
-        
-        
-    }else{
-        [freqSlider setEnabled:YES];
-        [pulseWidthSlider setEnabled:YES];
-        
-        //self.roboRoach.numberOfPulses = [NSNumber numberWithDouble:[self.roboRoach.duration intValue] * [self.roboRoach.frequency intValue] / 1000];
-        
-        //Still a bug: The duration should round to closest value. On disconnect/connect... the values are different.
-        //durationSlider.slider.minimumValue = 1000/[self.roboRoach.frequency intValue];
-        //durationSlider.slider.maximumValue = 1000/[self.roboRoach.frequency intValue] * [self.roboRoach.numberOfPulses intValue];
-        
-    }
+    
+    
 
     
 
@@ -268,7 +259,6 @@ SCTextFieldCell *hardwareCell;
     
     if ([self.roboRoach.pulseWidth doubleValue] > 1000.0/[self.roboRoach.frequency doubleValue])
     {
-        
         self.roboRoach.pulseWidth = [NSNumber numberWithDouble:(1000.0/[self.roboRoach.frequency doubleValue])];
         
     }
