@@ -14,8 +14,8 @@ bool turnCommandActive = NO;
 
 - (BYBRoboRoach * ) init {
     self.isLoadingParameters = 0;
-    self.frequency = [NSNumber numberWithInt:3];
-    self.pulseWidth = [NSNumber numberWithInt:9];
+    self.frequency = [NSNumber numberWithInt:1];
+    self.pulseWidth = [NSNumber numberWithInt:392];
     self.duration = [NSNumber numberWithInt:1000.0];
     self.randomMode = [NSNumber numberWithInt:0];
     self.gain = [NSNumber numberWithInt:100];

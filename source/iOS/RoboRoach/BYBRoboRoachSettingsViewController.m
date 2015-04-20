@@ -152,8 +152,16 @@ SCTextFieldCell *hardwareCell;
 
     pw  = [self.roboRoach.pulseWidth floatValue]/MAX_STIMULATION_TIME;
     
-    
-    float period = (1.0/[self.roboRoach.frequency floatValue])*((float)(1000.0/MAX_STIMULATION_TIME));
+    float period;
+    if([self.roboRoach.frequency floatValue]<1.0f)
+    {
+        period = (1.0/[self.roboRoach.frequency floatValue])*((float)(1000.0/MAX_STIMULATION_TIME));
+    }
+    else
+    {
+        period = (1.0/((float)[self.roboRoach.frequency intValue]))*((float)(1000.0/MAX_STIMULATION_TIME));
+        
+    }
     //NSLog(@"pw: %f", pw);
     //NSLog(@"period: %f", period);
     
@@ -246,7 +254,7 @@ SCTextFieldCell *hardwareCell;
     float roundedGain = round([self.roboRoach.gain floatValue]/ 5.0f) * 5.0f;
     self.roboRoach.gain = [NSNumber numberWithFloat:roundedGain];
     
-    float roundedDuration = round([self.roboRoach.duration floatValue]/ 10.0f) * 10.0f;
+    float roundedDuration = round(([self.roboRoach.duration floatValue]/ 10.0f) * 10.0f);
     self.roboRoach.duration = [NSNumber numberWithFloat:roundedDuration];
     
     

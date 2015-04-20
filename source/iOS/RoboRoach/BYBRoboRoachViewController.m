@@ -431,7 +431,6 @@ BOOL isConnected = NO;
         widthLabel.text =[NSString stringWithFormat:@"Pulse: %d ms",[rr.activeRoboRoach.pulseWidth intValue]];
         durationLabel.text = [NSString stringWithFormat:@"Dur: %d ms",[rr.activeRoboRoach.duration intValue]];
         
-        
         if([rr.activeRoboRoach.frequency floatValue]<1.0f)
         {
             freqLabel.text = [NSString stringWithFormat:@"Freq: %.01f Hz",[rr.activeRoboRoach.frequency floatValue]];

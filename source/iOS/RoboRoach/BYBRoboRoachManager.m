@@ -103,7 +103,14 @@ id <BYBRoboRoachManagerDelegate> delegate;
     //Units are converted for sending it over BT so that it fits in one byte per parameter
     
     //One unit of frequency equals 0.5Hz
-    data = (UInt8)roundf((self.activeRoboRoach.frequency.floatValue*2.0f));
+    if(self.activeRoboRoach.frequency.floatValue<1.0f)
+    {
+        data = (UInt8)roundf((self.activeRoboRoach.frequency.floatValue*2.0f));
+    }
+    else
+    {
+        data = (UInt8)roundf((self.activeRoboRoach.frequency.intValue*2.0f));
+    }
     if(data<1)
     {
         data  = 1;
@@ -314,16 +321,17 @@ id <BYBRoboRoachManagerDelegate> delegate;
                 char value;
                 [characteristic.value getBytes:&value length:1];
                 self.activeRoboRoach.frequency = [NSNumber numberWithFloat:(((float)(int)value)*0.5f)];
-                NSLog(@"[peripheral] didUpdateValueForChar Freq (%s, %@)", [self CBUUIDToString:characteristic.UUID], [NSNumber numberWithUnsignedChar:(unsigned char)value]);
+                NSLog(@"[peripheral] didUpdateValueForChar Freq (%s, %@)", [self CBUUIDToString:characteristic.UUID], self.activeRoboRoach.frequency);
                 break;
             }
             case BYB_ROBOROACH_CHAR_PULSEWIDTH_UUID:
             {
                 char value;
                 [characteristic.value getBytes:&value length:1];
-                int msLength = (int)((((float)(int)value)/255.0f) * (1000.0/[self.activeRoboRoach.frequency floatValue]));
+                NSNumber *numberPulseWidth = [NSNumber numberWithUnsignedChar:(unsigned char)value];
+                int msLength = (int)(([numberPulseWidth floatValue]/255.0f) * (1000.0/[self.activeRoboRoach.frequency floatValue]));
                 self.activeRoboRoach.pulseWidth = [NSNumber numberWithInt:msLength];
-                NSLog(@"[peripheral] didUpdateValueForChar PW   (%s, %@)", [self CBUUIDToString:characteristic.UUID], [NSNumber numberWithUnsignedChar:(unsigned char)value]);
+                NSLog(@"[peripheral] didUpdateValueForChar PW   (%s, %@)  (freq: %@)", [self CBUUIDToString:characteristic.UUID], self.activeRoboRoach.pulseWidth,self.activeRoboRoach.frequency );
                 break;
             }
             case BYB_ROBOROACH_CHAR_DURATION_IN_5MS_INTERVALS_UUID:
@@ -361,10 +369,11 @@ id <BYBRoboRoachManagerDelegate> delegate;
             }
             case DEVICE_INFO_CHAR_FIRMWARE_UUID:
             {
-                char value;
+                
+                char *value = (char *)malloc((10)*sizeof(char));
                 [characteristic.value getBytes:&value length:10];
                 self.activeRoboRoach.firmwareVersion = [NSString
-                    stringWithUTF8String:&value];
+                    stringWithUTF8String:value];
                 break;
             }
             case DEVICE_INFO_CHAR_HARDWARE_UUID:

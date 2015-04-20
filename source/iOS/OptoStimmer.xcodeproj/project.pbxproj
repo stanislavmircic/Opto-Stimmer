@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2407C43D1AE574B5005D671B /* OBSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 2407C43C1AE574B5005D671B /* OBSlider.m */; };
 		240E26061A0A22BB00B2003A /* SensibleTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 240E26051A0A22BB00B2003A /* SensibleTableView.framework */; };
 		240E260E1A0A239300B2003A /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 240E26081A0A239300B2003A /* libTestFlight.a */; };
 		240E260F1A0A239300B2003A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 240E26091A0A239300B2003A /* README.md */; };
@@ -110,6 +111,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2407C43B1AE574B5005D671B /* OBSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSlider.h; sourceTree = "<group>"; };
+		2407C43C1AE574B5005D671B /* OBSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSlider.m; sourceTree = "<group>"; };
 		240E26051A0A22BB00B2003A /* SensibleTableView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SensibleTableView.framework; sourceTree = "<group>"; };
 		240E26081A0A239300B2003A /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		240E26091A0A239300B2003A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -226,6 +229,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2407C43A1AE574B5005D671B /* OBSlider */ = {
+			isa = PBXGroup;
+			children = (
+				2407C43B1AE574B5005D671B /* OBSlider.h */,
+				2407C43C1AE574B5005D671B /* OBSlider.m */,
+			);
+			name = OBSlider;
+			path = RoboRoach/OBSlider;
+			sourceTree = "<group>";
+		};
 		240E26071A0A239300B2003A /* TestFlightSDK3.0.2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +310,7 @@
 		6F7A9EEB171A1732004B1575 = {
 			isa = PBXGroup;
 			children = (
+				2407C43A1AE574B5005D671B /* OBSlider */,
 				249D989E1A819C3300967F6A /* launchImages */,
 				245C78CB1A0A9C7900E16D8F /* Images.xcassets */,
 				240E26071A0A239300B2003A /* TestFlightSDK3.0.2 */,
@@ -550,6 +564,7 @@
 				6F7A9F04171A1732004B1575 /* main.m in Sources */,
 				6F7A9F08171A1732004B1575 /* BYBAppDelegate.m in Sources */,
 				6F7A9F2C171A338C004B1575 /* BYBRoboRoachViewController.m in Sources */,
+				2407C43D1AE574B5005D671B /* OBSlider.m in Sources */,
 				240E260F1A0A239300B2003A /* README.md in Sources */,
 				6F7A9F31171A64C0004B1575 /* BYBRoboRoachManager.m in Sources */,
 				6F938D24171F32EF0084E06A /* BYBRoboRoachSettingsViewController.m in Sources */,
@@ -718,7 +733,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "387fcc40-acdd-4eca-8f7d-324f8e76b0e6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5816a117-1519-41ab-bd05-a940a64fa58d";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
