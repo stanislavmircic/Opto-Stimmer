@@ -17,107 +17,197 @@
 
 
 @interface BYBRoboRoachSettingsViewController (){
-SCSliderCell *freqSlider;
-SCSliderCell *pulseWidthSlider;
-SCSliderCell *durationSlider;
-SCSwitchCell *randomCell;
-SCSliderCell *batterySlider;
-SCTextFieldCell *firmwareCell;
-SCTextFieldCell *hardwareCell;
+    UITextField * activeField;
     
 }
 @end
 
 @implementation BYBRoboRoachSettingsViewController
-
-
+@synthesize freqSlider;
+@synthesize pulseWidthSlider;
+@synthesize durationSlider;
+@synthesize frequencyTI;
+@synthesize durationTI;
+@synthesize pulseWidthTi;
+@synthesize scrollViewBackground;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    activeField = nil;
     [freqSlider setEnabled:YES];
     [pulseWidthSlider setEnabled:YES];
-
     
     [UIApplication sharedApplication].statusBarHidden = YES;
-    //self.roboRoach.duration = [NSNumber numberWithDouble:[self.roboRoach.numberOfPulses  doubleValue] * 1000 / [self.roboRoach.frequency doubleValue]];
-    
 
-    tableViewModel = [[SCTableViewModel alloc] initWithTableView:self->tableView] ;
-    tableViewModel.tableView.scrollEnabled = NO;
-    //tableViewModel.tableView.scrollsToTop = YES;
+    durationSlider.minimumValue = 10;
+    durationSlider.maximumValue = (float)MAX_STIMULATION_TIME;
+    [durationSlider setValue:[self.roboRoach.duration floatValue]];
     
-    SCTableViewSection *stimulationSection = [SCTableViewSection sectionWithHeaderTitle:@"Stimulation Parameters"];
-    
-    [tableViewModel addSection:stimulationSection];
-    
-    /*gainSlider = [SCSliderCell cellWithText:@"Gain" boundObject:self.roboRoach boundPropertyName:@"gain" ];
-    gainSlider.slider.minimumValue = 0;
-    gainSlider.slider.maximumValue = 100;
-    
-    [stimulationSection addCell:gainSlider];*/
-    
-    durationSlider = [SCSliderCell cellWithText:@"Duration" boundObject:self.roboRoach boundPropertyName:@"duration"  ];
-    durationSlider.slider.minimumValue = 10;
-    durationSlider.slider.maximumValue = (float)MAX_STIMULATION_TIME;
-    [stimulationSection addCell:durationSlider];
-    
-   /* randomCell = [SCSwitchCell cellWithText:@"Random Mode" boundObject:self.roboRoach boundPropertyName:@"randomMode"];
-    [stimulationSection addCell:randomCell];
-    */
-    
-    freqSlider = [SCSliderCell cellWithText:@"Frequency" boundObject:self.roboRoach boundPropertyName:@"frequency"  ];
-    freqSlider.slider.minimumValue = 0.5;
-    freqSlider.slider.maximumValue = 125;
-    [stimulationSection addCell:freqSlider];
-    
-    pulseWidthSlider = [SCSliderCell cellWithText:@"Pulse Width" boundObject:self.roboRoach boundPropertyName:@"pulseWidth"  ];
-    pulseWidthSlider.slider.minimumValue = 1;
-    pulseWidthSlider.slider.maximumValue = 200;
-    [stimulationSection addCell:pulseWidthSlider];
+    freqSlider.minimumValue = 0.5;
+    freqSlider.maximumValue = 125;
+    [freqSlider setValue:[self.roboRoach.frequency floatValue]];
 
-#if 0
-    
-    batterySlider = [SCSliderCell cellWithText:@"Battery Level" boundObject:self.roboRoach boundPropertyName:@"batteryLevel"  ];
-    batterySlider.slider.minimumValue = 1;
-    batterySlider.slider.maximumValue = 100;
-    batterySlider.slider.enabled = NO;
-   
-    
-    //#if 0
-    //[stimulationSection addCell:batterySlider];
-    //#else
-    SCTableViewSection *deviceSection = [SCTableViewSection sectionWithHeaderTitle:@"RoboRoach Device Information"];
-    [tableViewModel addSection:deviceSection];
-    
-    [deviceSection addCell:batterySlider];
-    
-    firmwareCell = [SCTextFieldCell cellWithText:@"Firmware" boundObject:self.roboRoach boundPropertyName:@"firmwareVersion"];
-    firmwareCell.textField.enabled = NO;
-    [deviceSection addCell:firmwareCell];
+    pulseWidthSlider.minimumValue = 1;
+    pulseWidthSlider.maximumValue = 200;
+    [pulseWidthSlider setValue:[self.roboRoach.pulseWidth floatValue]];
 
-    hardwareCell = [SCTextFieldCell cellWithText:@"Hardware" boundObject:self.roboRoach boundPropertyName:@"hardwareVersion"];
-    hardwareCell.textField.enabled = NO;
-    [deviceSection addCell:hardwareCell];
-
-#endif
-    
-    
     [self updateSettingConstraints ];
     [self redrawStimulation];
     
-    durationSlider.slider.continuous = YES;
-    freqSlider.slider.continuous = YES;
-    pulseWidthSlider.slider.continuous = YES;
-   // gainSlider.slider.continuous = YES;
-  
-    //[[tableViewModel tableView] setContentOffset:CGPointZero animated:YES];
+    durationSlider.continuous = YES;
+    freqSlider.continuous = YES;
+    pulseWidthSlider.continuous = YES;
     
+    
+    self.pulseWidthTi.delegate = self;
+    self.durationTI.delegate = self;
+    self.frequencyTI.delegate = self;
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(makeKeyboardDisapear)];
+    // prevents the scroll view from swallowing up the touch event of child buttons
+    tapGesture.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGesture];
+}
+
+
+-(void) makeKeyboardDisapear
+{
+    [self.pulseWidthTi resignFirstResponder];
+    [self.frequencyTI resignFirstResponder];
+    [self.durationTI resignFirstResponder];
+}
+
+- (void)addDoneButton {
+    UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
+    [keyboardToolbar sizeToFit];
+    UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                      target:nil action:nil];
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                      target:self.view action:@selector(endEditing:)];
+    keyboardToolbar.items = @[flexBarButton, doneBarButton];
+    self.durationTI.inputAccessoryView = keyboardToolbar;
+    self.frequencyTI.inputAccessoryView = keyboardToolbar;
+    self.pulseWidthTi.inputAccessoryView = keyboardToolbar;
+}
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    [self registerForKeyboardNotifications];
+    [self addDoneButton];
+}
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+}
+
+- (void)keyboardWillShow:(NSNotification*)aNotification
+{
+    if(activeField == self.pulseWidthTi)
+    {
+        self.scrollViewBackground.contentOffset = CGPointMake(0, 170);
+    }
+    
+    if(activeField == self.frequencyTI)
+    {
+        self.scrollViewBackground.contentOffset = CGPointMake(0, 60);
+    }
+}
+
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    self.scrollViewBackground.contentOffset = CGPointMake(0, 0);
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    activeField = nil;
+    [textField resignFirstResponder];
+    [self setSliderValuesFromTI];
+    [self updateSettingConstraints ];
+    [self redrawStimulation];
+}
+
+
+-(BOOL) setSliderValuesFromTI
+{
+    NSNumber * tempNumber = [[NSNumber alloc] initWithFloat:0.0f];
+    if([self stringIsNumeric:self.durationTI.text andNumber:&tempNumber] && ([tempNumber floatValue] >= 10.0f) && ([tempNumber floatValue]<=self.durationSlider.maximumValue))
+    {
+        
+        [self.durationSlider setValue:[tempNumber floatValue]];
+         self.roboRoach.duration = [NSNumber numberWithFloat:[tempNumber floatValue]];
+    }
+    else
+    {
+        [self validationAlertWithText: [NSString stringWithFormat: @"Enter valid number for duration. (10ms - %dms)",(int)(self.durationSlider.maximumValue)]];
+        return NO;
+    }
+    
+    tempNumber = [[NSNumber alloc] initWithFloat:0.0f];
+    if([self stringIsNumeric:self.frequencyTI.text andNumber:&tempNumber]  && ([tempNumber floatValue] >= 0.5f) && ([tempNumber floatValue]<=self.freqSlider.maximumValue))
+    {
+        
+        [self.freqSlider setValue:[tempNumber floatValue]];
+        self.roboRoach.frequency = [NSNumber numberWithFloat:[tempNumber floatValue]];
+    }
+    else
+    {
+        [self validationAlertWithText:[NSString stringWithFormat: @"Enter valid number for frequency. (0.5Hz - %dHz)", (int)(self.freqSlider.maximumValue)]];
+        return NO;
+    }
+    tempNumber = [[NSNumber alloc] initWithFloat:0.0f];
+    if([self stringIsNumeric:self.pulseWidthTi.text andNumber:&tempNumber]  && ([tempNumber floatValue] >= 1.0f) && ([tempNumber floatValue]<=self.pulseWidthSlider.maximumValue))
+    {
+        
+        [self.pulseWidthSlider setValue:[tempNumber floatValue]];
+        self.roboRoach.pulseWidth = [NSNumber numberWithFloat:[tempNumber floatValue]];
+    }
+    else
+    {
+        [self validationAlertWithText:[NSString stringWithFormat: @"Enter valid number for pulse width. Pulse width is constrained by frequency to interval: 1ms - %dms", (int)(self.pulseWidthSlider.maximumValue)]];
+        return NO;
+    }
+
+    
+    return YES;
 }
 
 
 
+-(BOOL) stringIsNumeric:(NSString *) str andNumber: (NSNumber**) outNumberValue
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setDecimalSeparator:@"."];
+    *outNumberValue = [formatter numberFromString:str];
+    return !!(*outNumberValue); // If the string is not numeric, number will be nil
+}
+
+-(void) validationAlertWithText:(NSString *) errorString
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid value" message:errorString
+                                                   delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+}
+
+
+
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    activeField = textField;
+}
 
 - (void)redrawStimulation
 {
@@ -258,28 +348,34 @@ SCTextFieldCell *hardwareCell;
     self.roboRoach.duration = [NSNumber numberWithFloat:roundedDuration];
     
     
-    
-    
-
-    
-
-    
-    
     if ([self.roboRoach.pulseWidth doubleValue] > 1000.0/[self.roboRoach.frequency doubleValue])
     {
         self.roboRoach.pulseWidth = [NSNumber numberWithDouble:(1000.0/[self.roboRoach.frequency doubleValue])];
         
     }
-    pulseWidthSlider.slider.minimumValue = 1;
-    pulseWidthSlider.slider.maximumValue = 1000.0/[self.roboRoach.frequency doubleValue];
-    if(pulseWidthSlider.slider.maximumValue > [self.roboRoach.duration doubleValue])
+    pulseWidthSlider.minimumValue = 1;
+    pulseWidthSlider.maximumValue = 1000.0/[self.roboRoach.frequency doubleValue];
+    if(pulseWidthSlider.maximumValue > [self.roboRoach.duration doubleValue])
     {
-        pulseWidthSlider.slider.maximumValue = [self.roboRoach.duration doubleValue];
+        pulseWidthSlider.maximumValue = [self.roboRoach.duration doubleValue];
     }
 
     //NSLog(@"pulseWidthSlider.slider.maximumValue: %f", pulseWidthSlider.slider.maximumValue);
     //NSLog(@"Num Pulses: %@", self.roboRoach.numberOfPulses);
+    [durationSlider setValue:[self.roboRoach.duration floatValue]];
+    [freqSlider setValue:[self.roboRoach.frequency floatValue]];
+    [pulseWidthSlider setValue:[self.roboRoach.pulseWidth floatValue]];
     
+    self.durationTI.text = [NSString stringWithFormat:@"%d",(int)[self.roboRoach.duration integerValue]];
+    if([self.roboRoach.frequency floatValue]<1.0f)
+    {
+        self.frequencyTI.text = [NSString stringWithFormat:@"%.01f",[self.roboRoach.frequency floatValue]];
+    }
+    else
+    {
+        self.frequencyTI.text = [NSString stringWithFormat:@"%d",(int)[self.roboRoach.frequency integerValue]];
+    }
+    self.pulseWidthTi.text = [NSString stringWithFormat:@"%d",(int)[self.roboRoach.pulseWidth integerValue]];
     [self redrawStimulation];
 
 }
@@ -306,25 +402,12 @@ scrollViewDidScroll:(UIScrollView*)scrollView
 
 
 -(void) viewWillDisappear:(BOOL)animated {
-    
-    //Fix a bug with SCTableView calling scroll event on zombie object.
-    //tableViewModel.delegate = nil;
+
     
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
-       
-        //Fix a bug with SCTableView calling scroll event on zombie object.
-        //[tableViewModel tableView].scrollEnabled = NO;
-        //[[tableViewModel tab] setContentOffset:CGPointZero animated:YES];
 
-        //tableViewModel.delegate = nil;
-        
-    
-        
-        
         NSLog(@"Save settings back to the RoboRoach!");
         [self.roboRoach updateSettings];
-        
-        
     }
     [super viewWillDisappear:animated];
 }
@@ -345,5 +428,25 @@ scrollViewDidScroll:(UIScrollView*)scrollView
     [self.roboRoach updateSettings];
     [self.masterDelegate applySettings];
     
+}
+- (IBAction)pulseWidthChange:(id)sender {
+    float tempFloat = self.pulseWidthSlider.value;
+    self.roboRoach.pulseWidth = [NSNumber numberWithFloat:tempFloat];
+    [self updateSettingConstraints];
+    [self redrawStimulation];
+}
+
+- (IBAction)frequencyChanged:(id)sender {
+    float tempFloat = self.freqSlider.value;
+    self.roboRoach.frequency = [NSNumber numberWithFloat:tempFloat];
+    [self updateSettingConstraints];
+    [self redrawStimulation];
+}
+
+- (IBAction)durationChanged:(id)sender {
+    float tempFloat = self.durationSlider.value;
+    self.roboRoach.duration = [NSNumber numberWithFloat:tempFloat];
+    [self updateSettingConstraints];
+    [self redrawStimulation];
 }
 @end

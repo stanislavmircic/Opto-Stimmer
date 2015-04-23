@@ -320,7 +320,9 @@ id <BYBRoboRoachManagerDelegate> delegate;
             {
                 char value;
                 [characteristic.value getBytes:&value length:1];
-                self.activeRoboRoach.frequency = [NSNumber numberWithFloat:(((float)(int)value)*0.5f)];
+                 NSNumber *numberFreq = [NSNumber numberWithUnsignedChar:(unsigned char)value];
+                
+                self.activeRoboRoach.frequency = [NSNumber numberWithFloat:[numberFreq floatValue]*0.5f];
                 NSLog(@"[peripheral] didUpdateValueForChar Freq (%s, %@)", [self CBUUIDToString:characteristic.UUID], self.activeRoboRoach.frequency);
                 break;
             }
@@ -329,7 +331,12 @@ id <BYBRoboRoachManagerDelegate> delegate;
                 char value;
                 [characteristic.value getBytes:&value length:1];
                 NSNumber *numberPulseWidth = [NSNumber numberWithUnsignedChar:(unsigned char)value];
+  
                 int msLength = (int)(([numberPulseWidth floatValue]/255.0f) * (1000.0/[self.activeRoboRoach.frequency floatValue]));
+                if(msLength<1)
+                {
+                    msLength = 1;
+                }
                 self.activeRoboRoach.pulseWidth = [NSNumber numberWithInt:msLength];
                 NSLog(@"[peripheral] didUpdateValueForChar PW   (%s, %@)  (freq: %@)", [self CBUUIDToString:characteristic.UUID], self.activeRoboRoach.pulseWidth,self.activeRoboRoach.frequency );
                 break;

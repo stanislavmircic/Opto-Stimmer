@@ -733,7 +733,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5816a117-1519-41ab-bd05-a940a64fa58d";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "387fcc40-acdd-4eca-8f7d-324f8e76b0e6";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
