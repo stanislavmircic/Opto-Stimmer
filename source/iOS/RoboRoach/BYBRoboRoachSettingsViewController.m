@@ -18,7 +18,8 @@
 
 @interface BYBRoboRoachSettingsViewController (){
     UITextField * activeField;
-    
+    float maxStimulationTime;
+    float frequencyMinimumValue;
 }
 @end
 
@@ -33,18 +34,29 @@
 
 - (void)viewDidLoad
 {
+    maxStimulationTime = 1000.0f;
     [super viewDidLoad];
+    if([self.roboRoach.firmwareVersion isEqualToString:@"1.0"])
+    {
+        maxStimulationTime = 1000.0f;
+        frequencyMinimumValue = 1.0f;
+    }
+    else if ([self.roboRoach.firmwareVersion isEqualToString:@"0.81"] || [self.roboRoach.firmwareVersion isEqualToString:@"0.8"])
+    {
+        maxStimulationTime = 2000.0f;
+        frequencyMinimumValue = 0.5f;
+    }
+
     activeField = nil;
     [freqSlider setEnabled:YES];
     [pulseWidthSlider setEnabled:YES];
     
     [UIApplication sharedApplication].statusBarHidden = YES;
-
     durationSlider.minimumValue = 10;
-    durationSlider.maximumValue = (float)MAX_STIMULATION_TIME;
+    durationSlider.maximumValue = maxStimulationTime;
     [durationSlider setValue:[self.roboRoach.duration floatValue]];
     
-    freqSlider.minimumValue = 0.5;
+    freqSlider.minimumValue = frequencyMinimumValue;
     freqSlider.maximumValue = 125;
     [freqSlider setValue:[self.roboRoach.frequency floatValue]];
 
@@ -156,7 +168,7 @@
     }
     
     tempNumber = [[NSNumber alloc] initWithFloat:0.0f];
-    if([self stringIsNumeric:self.frequencyTI.text andNumber:&tempNumber]  && ([tempNumber floatValue] >= 0.5f) && ([tempNumber floatValue]<=self.freqSlider.maximumValue))
+    if([self stringIsNumeric:self.frequencyTI.text andNumber:&tempNumber]  && ([tempNumber floatValue] >= frequencyMinimumValue) && ([tempNumber floatValue]<=self.freqSlider.maximumValue))
     {
         
         [self.freqSlider setValue:[tempNumber floatValue]];
@@ -164,7 +176,7 @@
     }
     else
     {
-        [self validationAlertWithText:[NSString stringWithFormat: @"Enter valid number for frequency. (0.5Hz - %dHz)", (int)(self.freqSlider.maximumValue)]];
+        [self validationAlertWithText:[NSString stringWithFormat: @"Enter valid number for frequency. (%.01fHz - %dHz)",frequencyMinimumValue, (int)(self.freqSlider.maximumValue)]];
         return NO;
     }
     tempNumber = [[NSNumber alloc] initWithFloat:0.0f];
@@ -240,16 +252,16 @@
         self.roboRoach.pulseWidth = self.roboRoach.duration;
     }
 
-    pw  = [self.roboRoach.pulseWidth floatValue]/MAX_STIMULATION_TIME;
+    pw  = [self.roboRoach.pulseWidth floatValue]/maxStimulationTime;
     
     float period;
     if([self.roboRoach.frequency floatValue]<1.0f)
     {
-        period = (1.0/[self.roboRoach.frequency floatValue])*((float)(1000.0/MAX_STIMULATION_TIME));
+        period = (1.0/[self.roboRoach.frequency floatValue])*((float)(1000.0/maxStimulationTime));
     }
     else
     {
-        period = (1.0/((float)[self.roboRoach.frequency intValue]))*((float)(1000.0/MAX_STIMULATION_TIME));
+        period = (1.0/((float)[self.roboRoach.frequency intValue]))*((float)(1000.0/maxStimulationTime));
         
     }
     //NSLog(@"pw: %f", pw);
@@ -260,7 +272,7 @@
     
     float totalDuration = 0;
     
-    while( totalDuration < [self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)
+    while( totalDuration < [self.roboRoach.duration floatValue]/maxStimulationTime)
     {
 
         totalDuration += period;
@@ -271,9 +283,9 @@
         //Go Over
         x += pw*POINTS_TO_SEC;
 
-        if(x>=(([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC + STIMLINE_OFFSET))
+        if(x>=(([self.roboRoach.duration floatValue]/maxStimulationTime)*POINTS_TO_SEC + STIMLINE_OFFSET))
         {
-             x =([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC +STIMLINE_OFFSET;
+             x =([self.roboRoach.duration floatValue]/maxStimulationTime)*POINTS_TO_SEC +STIMLINE_OFFSET;
             CGContextAddLineToPoint(context, x, STIMLINE_BASE - ((STIMLINE_BASE - STIMLINE_PEAK) * gain));
             break;
         }
@@ -287,9 +299,9 @@
         //Go to end
 
         x += (period - pw)*POINTS_TO_SEC;
-       if(x>=(([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC + STIMLINE_OFFSET))
+       if(x>=(([self.roboRoach.duration floatValue]/maxStimulationTime)*POINTS_TO_SEC + STIMLINE_OFFSET))
         {
-            x =([self.roboRoach.duration floatValue]/MAX_STIMULATION_TIME)*POINTS_TO_SEC +STIMLINE_OFFSET;
+            x =([self.roboRoach.duration floatValue]/maxStimulationTime)*POINTS_TO_SEC +STIMLINE_OFFSET;
             CGContextAddLineToPoint(context, x, STIMLINE_BASE);
             break;
         }

@@ -42,6 +42,12 @@
 @end
 
 @interface BYBRoboRoachManager : NSObject <CBCentralManagerDelegate , CBPeripheralDelegate >
+{
+    UInt16 tempPulseWidthFirst;
+    UInt16 tempPulseWidthSecond;
+    float tempDuration;
+    float tempFrequency;
+}
 
 @property (strong, nonatomic) NSMutableArray *peripherals;
 @property (strong, nonatomic) CBCentralManager *CM;
