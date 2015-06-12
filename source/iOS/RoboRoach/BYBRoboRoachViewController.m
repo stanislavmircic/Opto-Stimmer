@@ -413,7 +413,13 @@ BOOL isConnected = NO;
     viewController.roboRoach = rr.activeRoboRoach;
     viewController.masterDelegate = self;
    // self.cameraUI.cameraOverlayView = viewController.view;
-    [self presentViewController:viewController animated:YES completion:nil];
+    
+   
+    UINavigationController *navigationController =
+    [[UINavigationController alloc] initWithRootViewController:viewController];
+
+ 
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 -(void) applySettings

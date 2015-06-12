@@ -47,6 +47,7 @@
     UInt16 tempPulseWidthSecond;
     float tempDuration;
     float tempFrequency;
+    long maximumSignalStrength;
 }
 
 @property (strong, nonatomic) NSMutableArray *peripherals;

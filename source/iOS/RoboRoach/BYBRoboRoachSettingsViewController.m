@@ -20,6 +20,7 @@
     UITextField * activeField;
     float maxStimulationTime;
     float frequencyMinimumValue;
+    CGPoint tempScrollOffset;
 }
 @end
 
@@ -107,9 +108,30 @@
 
 -(void) viewWillAppear:(BOOL)animated
 {
+   // UINavigationController * localNavigationController = self.navigationController;
+   // [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self registerForKeyboardNotifications];
+    self.scrollViewBackground.contentSize=CGSizeMake(320,500);
     [self addDoneButton];
+    [self addBackButton];
 }
+
+-(void) addBackButton
+{
+   /* UIBarButtonItem *flipButton = [[UIBarButtonItem alloc]
+                                   initWithTitle:@"Back"
+                                   style:UIBarButtonItemStyleBordered
+                                   target:self
+                                   action:@selector(applyBtnClick:)];
+    self.navigationItem.leftBarButtonItem = flipButton;*/
+    UIBarButtonItem *_backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:self action:@selector(applyBtnClick:)];
+    self.navigationItem.leftBarButtonItem = _backButton;//.title = @"Back";
+    self.navigationItem.leftItemsSupplementBackButton = NO;
+   // self.navigationItem.rightBarButtonItem = _backButton;
+
+}
+
+
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -125,6 +147,8 @@
 
 - (void)keyboardWillShow:(NSNotification*)aNotification
 {
+    
+    tempScrollOffset = self.scrollViewBackground.contentOffset;
     if(activeField == self.pulseWidthTi)
     {
         self.scrollViewBackground.contentOffset = CGPointMake(0, 170);
@@ -139,7 +163,8 @@
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    self.scrollViewBackground.contentOffset = CGPointMake(0, 0);
+    //self.scrollViewBackground.contentOffset = CGPointMake(0, 0);
+    self.scrollViewBackground.contentOffset = tempScrollOffset;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
