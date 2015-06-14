@@ -30,6 +30,7 @@ id <BYBRoboRoachManagerDelegate> delegate;
 }
 
 -(int) searchForRoboRoaches:(int) timeout{
+
     NSLog(@"searchForRoboRoaches() - Entered");
     maximumSignalStrength = -10000;
     if (self.CM.state  != CBCentralManagerStatePoweredOn) {
@@ -490,7 +491,17 @@ id <BYBRoboRoachManagerDelegate> delegate;
     }
     else
     {//all other. Not recognized.
-    
+        //Use newest configuration
+        self.activeRoboRoach.frequency = [NSNumber numberWithFloat:tempFrequency*0.5f];
+        self.activeRoboRoach.duration = [NSNumber numberWithInt:(int)(tempDuration * 8)];
+        self.activeRoboRoach.pulseWidth = [NSNumber numberWithUnsignedInteger:(tempPulseWidthFirst & 0x00FF) | (tempPulseWidthSecond<<8)];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unrecognized hardver version"
+                                                        message:@"We can't recognize hardware version of OptoStimmer. Please update application and try to connect again."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
     }
     
 }
