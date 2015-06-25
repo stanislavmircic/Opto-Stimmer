@@ -483,7 +483,7 @@ id <BYBRoboRoachManagerDelegate> delegate;
         self.activeRoboRoach.duration = [NSNumber numberWithInt:(int)(tempDuration * 8)];
         self.activeRoboRoach.pulseWidth = [NSNumber numberWithUnsignedInteger:(tempPulseWidthFirst & 0x00FF) | (tempPulseWidthSecond<<8)];
     }
-    if([self.activeRoboRoach.firmwareVersion isEqualToString:@"1.0"])
+    else if([self.activeRoboRoach.firmwareVersion isEqualToString:@"1.0"])
     {//old one with pulse width that works 1-255
         self.activeRoboRoach.frequency = [NSNumber numberWithFloat:tempFrequency];
         self.activeRoboRoach.duration = [NSNumber numberWithInt:(int)(tempDuration * 5)];

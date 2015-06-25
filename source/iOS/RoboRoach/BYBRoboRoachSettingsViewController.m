@@ -111,7 +111,14 @@
    // UINavigationController * localNavigationController = self.navigationController;
    // [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self registerForKeyboardNotifications];
-    self.scrollViewBackground.contentSize=CGSizeMake(320,500);
+    if ((int)[[UIScreen mainScreen] bounds].size.height > 560)
+    {
+        self.scrollViewBackground.contentSize=CGSizeMake(320,480);
+    }
+    else
+    {
+        self.scrollViewBackground.contentSize=CGSizeMake(320,580);
+    }
     [self addDoneButton];
     [self addBackButton];
 }
@@ -151,12 +158,26 @@
     tempScrollOffset = self.scrollViewBackground.contentOffset;
     if(activeField == self.pulseWidthTi)
     {
-        self.scrollViewBackground.contentOffset = CGPointMake(0, 170);
+        if ((int)[[UIScreen mainScreen] bounds].size.height > 560)
+        {
+            self.scrollViewBackground.contentOffset = CGPointMake(0, 170);
+        } else {
+            // This is iPhone 4/4s screen
+            self.scrollViewBackground.contentOffset = CGPointMake(0, 270);
+        }
+        
     }
     
     if(activeField == self.frequencyTI)
     {
-        self.scrollViewBackground.contentOffset = CGPointMake(0, 60);
+        if ((int)[[UIScreen mainScreen] bounds].size.height > 560)
+        {
+            self.scrollViewBackground.contentOffset = CGPointMake(0, 60);
+        }
+        else
+        {
+            self.scrollViewBackground.contentOffset = CGPointMake(0, 160);
+        }
     }
 }
 

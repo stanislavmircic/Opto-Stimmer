@@ -464,6 +464,13 @@ BOOL isConnected = NO;
 -(void) connectBTNHandler:(id) item
 {
 
+#if TARGET_IPHONE_SIMULATOR
+    
+    NSLog(@"Running in Simulator");
+    [self didConnectToRoboRoach:YES];
+    [self configurationBTNHandler:nil];
+    
+#else
     [self connectButtonClicked:nil];
     if (!isConnected) {
         currentState = STATE_CONNECTING;
@@ -480,6 +487,7 @@ BOOL isConnected = NO;
         isConnected = NO;
     }
     [self refreshViewState];
+#endif
 }
 
 -(void) recordPressed:(id) item
