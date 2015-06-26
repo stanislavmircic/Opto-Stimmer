@@ -134,6 +134,7 @@ BOOL isConnected = NO;
     videoCamera.horizontallyMirrorFrontFacingCamera = NO;
     videoCamera.horizontallyMirrorRearFacingCamera = NO;
     
+    
     transformFilter = [[GPUImageTransformFilter alloc] init];
     [transformFilter setAffineTransform:CGAffineTransformMakeScale(1.0, 1.0)];
  
@@ -152,7 +153,7 @@ BOOL isConnected = NO;
 
     
     [self setupVideoRecorder];
-    
+    videoCamera.audioEncodingTarget = movieWriter;
     
     
     
@@ -548,6 +549,7 @@ BOOL isConnected = NO;
     movieWriter = nil;
     
     [self setupVideoRecorder];
+    videoCamera.audioEncodingTarget = movieWriter;
     [blendFilter addTarget:movieWriter];
     
 }
@@ -657,6 +659,10 @@ BOOL isConnected = NO;
     }
     
     
+    [self loadSettingsFromUserDefaults];
+    //[rr sendUpdatedSettingsToActiveRoboRoach];
+    [self roboRoachHasChangedSettings:rr.activeRoboRoach];
+    
 }
 
 
@@ -708,6 +714,7 @@ BOOL isConnected = NO;
     
     [connectBTN setEnabled:YES];
     currentState = STATE_CONNECTED;
+    
     [self refreshViewState];
 
     
@@ -771,6 +778,8 @@ BOOL isConnected = NO;
     [bookmarkBar setSelectedSegmentIndex:5]; //Other
     //NSLog(@"Updated Bar");
     
+    [self saveSettingsToLocalUserDefaults];
+    
     [rr sendUpdatedSettingsToActiveRoboRoach];
     //NSLog(@"Finished sendUpdatedSettingsToActiveRoboRoach");
     
@@ -779,6 +788,60 @@ BOOL isConnected = NO;
     
     NSLog(@"roboRoachHasChangedSettings--");
     
+}
+
+//
+// Save settings parameters to local user defaults
+//
+-(void) saveSettingsToLocalUserDefaults
+{
+    [[NSUserDefaults standardUserDefaults] setObject:rr.activeRoboRoach.frequency forKey:FREQUENCY_IDENTIFIER];
+    [[NSUserDefaults standardUserDefaults] setObject:rr.activeRoboRoach.pulseWidth forKey:PULSE_LENGTH_IDENTIFIER];
+    [[NSUserDefaults standardUserDefaults] setObject:rr.activeRoboRoach.duration forKey:DURATION_IDENTIFIER];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:rr.activeRoboRoach.firmwareVersion forKey:LAST_FMW_VERSION_IDENTIFIER];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void) loadSettingsFromUserDefaults
+{
+    //check if we have firmware version of last connected device
+    NSString * lastFMWVersion = @"unknown";
+    if([[NSUserDefaults standardUserDefaults] objectForKey:LAST_FMW_VERSION_IDENTIFIER])
+    {
+        lastFMWVersion = [[NSUserDefaults standardUserDefaults] stringForKey:LAST_FMW_VERSION_IDENTIFIER];
+    }
+    
+    if(![lastFMWVersion isEqualToString:@"unknown"] && [rr.activeRoboRoach.firmwareVersion isEqualToString:lastFMWVersion])
+    {
+        
+        
+        
+        if([[NSUserDefaults standardUserDefaults] objectForKey:FREQUENCY_IDENTIFIER])
+        {
+            float frequencyTemp = [[NSUserDefaults standardUserDefaults] floatForKey:FREQUENCY_IDENTIFIER];
+            rr.activeRoboRoach.frequency = [NSNumber numberWithFloat:frequencyTemp];
+        }
+        if([[NSUserDefaults standardUserDefaults] objectForKey:PULSE_LENGTH_IDENTIFIER])
+        {
+            float pulseLengthTemp = [[NSUserDefaults standardUserDefaults] floatForKey:PULSE_LENGTH_IDENTIFIER];
+            rr.activeRoboRoach.pulseWidth = [NSNumber numberWithFloat:pulseLengthTemp];
+        }
+        if([[NSUserDefaults standardUserDefaults] objectForKey:DURATION_IDENTIFIER])
+        {
+            float durationTemp = [[NSUserDefaults standardUserDefaults] floatForKey:DURATION_IDENTIFIER];
+            rr.activeRoboRoach.duration = [NSNumber numberWithFloat:durationTemp];
+        }
+    }
+    else
+    {
+            //if we don't have firmware version just ignore saved parameters (if any) and set up default one
+            rr.activeRoboRoach.frequency = [NSNumber numberWithFloat:1.0f];
+            rr.activeRoboRoach.pulseWidth = [NSNumber numberWithFloat:100.0f];
+            rr.activeRoboRoach.duration = [NSNumber numberWithFloat:1000.0f];
+    }
+
 }
 
 

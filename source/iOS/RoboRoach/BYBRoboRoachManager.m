@@ -171,7 +171,54 @@ id <BYBRoboRoachManagerDelegate> delegate;
     }
     else
     {
-        //do nothing. Unrecognized firmware.
+        //do latest conversions. Unrecognized firmware.
+        
+        
+        
+        
+        
+        
+        //One unit of frequency equals 0.5Hz
+        if(self.activeRoboRoach.frequency.floatValue<1.0f)
+        {
+            data = (UInt8)roundf((self.activeRoboRoach.frequency.floatValue*2.0f));
+        }
+        else
+        {
+            data = (UInt8)roundf((self.activeRoboRoach.frequency.intValue*2.0f));
+        }
+        if(data<1)
+        {
+            data  = 1;
+        }
+        [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_FREQUENCY_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
+        
+        //one unit of pulse width equals (100/255)% of period of impuls
+        // data = (int)(255.0 * (self.activeRoboRoach.pulseWidth.floatValue/(1000.0/self.activeRoboRoach.frequency.floatValue)));
+        data = (UInt8)(self.activeRoboRoach.pulseWidth.unsignedIntValue & 0xFF);
+        [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_PULSEWIDTH_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
+        
+        //one unit of duration equals 8ms
+        data = self.activeRoboRoach.duration.integerValue/8; //Note we need to divide by 8ms.
+        [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_DURATION_IN_5MS_INTERVALS_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
+        
+        data = self.activeRoboRoach.randomMode.integerValue;
+        [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_RANDOMMODE_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
+        
+        data = self.activeRoboRoach.gain.unsignedIntegerValue;
+        [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_GAIN_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
+        
+        
+        uint pulseWidthTemp = self.activeRoboRoach.pulseWidth.unsignedIntValue;
+        data = (UInt8)((pulseWidthTemp >> 8) & 0xFF);
+        [self writeValue:BYB_ROBOROACH_SERVICE_UUID characteristicUUID:BYB_ROBOROACH_CHAR_PULSE_WIDTH_SEC_UUID data:[NSData dataWithBytes: &data length: sizeof(data)]];
+        
+        
+        
+        
+        
+        
+        
     }
 
 }
@@ -315,10 +362,12 @@ id <BYBRoboRoachManagerDelegate> delegate;
     NSLog(@"Ad data :\n%@",advertisementData);
     NSLog(@"Hardware Name: %@",peripheral.name);
     NSLog(@"Hardver ID: %@", peripheral.UUID);
-    if(peripheral.name != nil)
+    
+    NSString * nameString = (NSString *)[advertisementData objectForKey:@"kCBAdvDataLocalName"];
+    if(nameString != nil)
     {
-        
-        if ([peripheral.name rangeOfString:@"OptoStimmer"].location != NSNotFound) {
+        if ([nameString rangeOfString:@"OptoStimmer"].location != NSNotFound) {
+
             NSLog(@"Found RoboRoach!...\n");
             NSLog(@"Signal strength: %ld\n",[RSSI longValue]);
             if([RSSI longValue]>maximumSignalStrength)
@@ -476,7 +525,7 @@ id <BYBRoboRoachManagerDelegate> delegate;
 
 - (void) recalculateParametersBasedOnFirmware
 {
-
+    NSLog(@"Recalculate Parameters based on firmware\n");
     if([self.activeRoboRoach.firmwareVersion  isEqualToString:@"0.81"] || [self.activeRoboRoach.firmwareVersion  isEqualToString:@"0.8"])
     {//2 sec max and pulse width encoded with 2 bytes
         self.activeRoboRoach.frequency = [NSNumber numberWithFloat:tempFrequency*0.5f];

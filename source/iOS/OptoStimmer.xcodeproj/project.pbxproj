@@ -113,6 +113,7 @@
 /* Begin PBXFileReference section */
 		2407C43B1AE574B5005D671B /* OBSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSlider.h; sourceTree = "<group>"; };
 		2407C43C1AE574B5005D671B /* OBSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSlider.m; sourceTree = "<group>"; };
+		240CA03A1B3C63F80076E9A4 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
 		240E26051A0A22BB00B2003A /* SensibleTableView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SensibleTableView.framework; sourceTree = "<group>"; };
 		240E26081A0A239300B2003A /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		240E26091A0A239300B2003A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -368,6 +369,7 @@
 				6F938D331720D1950084E06A /* Resources */,
 				6F7A9EFF171A1732004B1575 /* OptoStimmer-Info.plist */,
 				6F7A9F05171A1732004B1575 /* OptoStimmer-Prefix.pch */,
+				240CA03A1B3C63F80076E9A4 /* constants.h */,
 			);
 			path = RoboRoach;
 			sourceTree = "<group>";
