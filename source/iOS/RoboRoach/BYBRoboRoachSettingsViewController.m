@@ -438,26 +438,6 @@
 
 }
 
-- (void) tableViewModel:(SCTableViewModel *)tableViewModel
-valueChangedForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self updateSettingConstraints ];
-}
-
-
-- (void) tableViewModel:(SCTableViewModel *)tableViewModel
-scrollViewDidScroll:(UIScrollView*)scrollView
-{
-        return;
-}
-
-
-- (void) tableViewModel:(SCTableViewModel *)tableViewModel
-    scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [scrollView setContentOffset:scrollView.contentOffset animated:YES];
-}
-
 
 -(void) viewWillDisappear:(BOOL)animated {
 

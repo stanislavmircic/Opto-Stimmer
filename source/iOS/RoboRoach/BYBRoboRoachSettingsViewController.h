@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <SensibleTableView/SCTableViewModel.h>
+//#import <SensibleTableView/SCTableViewModel.h>
 #import "BYBRoboRoachManager.h"
 #import "OBSlider.h"
 @protocol BYBSettingsDelegate;
 
 
-@interface BYBRoboRoachSettingsViewController : UIViewController <SCTableViewModelDelegate,UITextFieldDelegate,UITextViewDelegate>{
+@interface BYBRoboRoachSettingsViewController : UIViewController <UITextFieldDelegate,UITextViewDelegate>{
     //SCTableViewModel *tableViewModel;
     //IBOutlet UITableView *tableView;
     __weak IBOutlet UIImageView *stimImage;

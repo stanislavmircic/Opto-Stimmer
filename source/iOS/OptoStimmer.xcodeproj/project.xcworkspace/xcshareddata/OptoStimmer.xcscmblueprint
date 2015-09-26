@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "EA053EF21F21BC3249CC605F99F981E7624D3F24",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "EA053EF21F21BC3249CC605F99F981E7624D3F24" : 0,
+    "E609DD15689CC93D8F4D219EB393F30F9F726178" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "DE248435-27DB-42B9-A2CA-F06FA90A1DB9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "EA053EF21F21BC3249CC605F99F981E7624D3F24" : "Opto-Stimmer\/",
+    "E609DD15689CC93D8F4D219EB393F30F9F726178" : "GPUImage\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "OptoStimmer",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "source\/iOS\/OptoStimmer.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/BradLarson\/GPUImage.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E609DD15689CC93D8F4D219EB393F30F9F726178"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/stanislavmircic\/Opto-Stimmer.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "EA053EF21F21BC3249CC605F99F981E7624D3F24"
+    }
+  ]
+}

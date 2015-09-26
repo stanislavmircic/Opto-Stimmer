@@ -8,10 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2407C43D1AE574B5005D671B /* OBSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 2407C43C1AE574B5005D671B /* OBSlider.m */; };
-		240E26061A0A22BB00B2003A /* SensibleTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 240E26051A0A22BB00B2003A /* SensibleTableView.framework */; };
-		240E260E1A0A239300B2003A /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 240E26081A0A239300B2003A /* libTestFlight.a */; };
-		240E260F1A0A239300B2003A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 240E26091A0A239300B2003A /* README.md */; };
-		240E26101A0A239300B2003A /* release_notes.md in Sources */ = {isa = PBXBuildFile; fileRef = 240E260A1A0A239300B2003A /* release_notes.md */; };
 		240E26121A0A2CCD00B2003A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 240E26111A0A2CCD00B2003A /* CoreVideo.framework */; };
 		240E26141A0A2CE400B2003A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 240E26131A0A2CE400B2003A /* CoreMedia.framework */; };
 		240E26161A0A2CFB00B2003A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 240E26151A0A2CFB00B2003A /* MobileCoreServices.framework */; };
@@ -61,7 +57,6 @@
 		249D98951A81952800967F6A /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 249D98831A81952800967F6A /* iTunesArtwork@2x.png */; };
 		6F089475174EDEA600AF3D7F /* Comic_Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F089474174ED8E500AF3D7F /* Comic_Book.ttf */; };
 		6F280B08173307DA00BDBDF8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F280B07173307DA00BDBDF8 /* libz.dylib */; };
-		6F5BCAD918255B5400B77AFE /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F5BCAD618255B5400B77AFE /* libTestFlight.a */; };
 		6F5FE06418273FBC00FA8647 /* battery-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F5FE05E18273FBC00FA8647 /* battery-0.png */; };
 		6F5FE06518273FBC00FA8647 /* battery-25.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F5FE05F18273FBC00FA8647 /* battery-25.png */; };
 		6F5FE06618273FBC00FA8647 /* battery-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F5FE06018273FBC00FA8647 /* battery-50.png */; };
@@ -114,13 +109,6 @@
 		2407C43B1AE574B5005D671B /* OBSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSlider.h; sourceTree = "<group>"; };
 		2407C43C1AE574B5005D671B /* OBSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSlider.m; sourceTree = "<group>"; };
 		240CA03A1B3C63F80076E9A4 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
-		240E26051A0A22BB00B2003A /* SensibleTableView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SensibleTableView.framework; sourceTree = "<group>"; };
-		240E26081A0A239300B2003A /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		240E26091A0A239300B2003A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		240E260A1A0A239300B2003A /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = release_notes.md; sourceTree = "<group>"; };
-		240E260B1A0A239300B2003A /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		240E260C1A0A239300B2003A /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
-		240E260D1A0A239300B2003A /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		240E26111A0A2CCD00B2003A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		240E26131A0A2CE400B2003A /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		240E26151A0A2CFB00B2003A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -170,8 +158,6 @@
 		249D98831A81952800967F6A /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		6F089474174ED8E500AF3D7F /* Comic_Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Comic_Book.ttf; sourceTree = "<group>"; };
 		6F280B07173307DA00BDBDF8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		6F5BCAD618255B5400B77AFE /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		6F5BCAD718255B5400B77AFE /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		6F5FE05E18273FBC00FA8647 /* battery-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "battery-0.png"; sourceTree = "<group>"; };
 		6F5FE05F18273FBC00FA8647 /* battery-25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "battery-25.png"; sourceTree = "<group>"; };
 		6F5FE06018273FBC00FA8647 /* battery-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "battery-50.png"; sourceTree = "<group>"; };
@@ -216,10 +202,7 @@
 				240E26141A0A2CE400B2003A /* CoreMedia.framework in Frameworks */,
 				240E26121A0A2CCD00B2003A /* CoreVideo.framework in Frameworks */,
 				6F280B08173307DA00BDBDF8 /* libz.dylib in Frameworks */,
-				240E26061A0A22BB00B2003A /* SensibleTableView.framework in Frameworks */,
-				6F5BCAD918255B5400B77AFE /* libTestFlight.a in Frameworks */,
 				2488695E1A13CB4F00271662 /* libGPUImage.a in Frameworks */,
-				240E260E1A0A239300B2003A /* libTestFlight.a in Frameworks */,
 				6F7A9F2E171A5CD3004B1575 /* CoreBluetooth.framework in Frameworks */,
 				6F7A9EFA171A1732004B1575 /* Foundation.framework in Frameworks */,
 				6FBAF568172442CF00C8E3D1 /* UIKit.framework in Frameworks */,
@@ -238,19 +221,6 @@
 			);
 			name = OBSlider;
 			path = RoboRoach/OBSlider;
-			sourceTree = "<group>";
-		};
-		240E26071A0A239300B2003A /* TestFlightSDK3.0.2 */ = {
-			isa = PBXGroup;
-			children = (
-				240E26081A0A239300B2003A /* libTestFlight.a */,
-				240E26091A0A239300B2003A /* README.md */,
-				240E260A1A0A239300B2003A /* release_notes.md */,
-				240E260B1A0A239300B2003A /* TestFlight+AsyncLogging.h */,
-				240E260C1A0A239300B2003A /* TestFlight+ManualSessions.h */,
-				240E260D1A0A239300B2003A /* TestFlight.h */,
-			);
-			path = TestFlightSDK3.0.2;
 			sourceTree = "<group>";
 		};
 		245C78CD1A0AA8E000E16D8F /* appicons */ = {
@@ -298,23 +268,12 @@
 			name = launchImages;
 			sourceTree = "<group>";
 		};
-		6F5BCAD518255B5400B77AFE /* TestFlight */ = {
-			isa = PBXGroup;
-			children = (
-				6F5BCAD618255B5400B77AFE /* libTestFlight.a */,
-				6F5BCAD718255B5400B77AFE /* TestFlight.h */,
-			);
-			name = TestFlight;
-			path = "Static Frameworks/TestFlight";
-			sourceTree = "<group>";
-		};
 		6F7A9EEB171A1732004B1575 = {
 			isa = PBXGroup;
 			children = (
 				2407C43A1AE574B5005D671B /* OBSlider */,
 				249D989E1A819C3300967F6A /* launchImages */,
 				245C78CB1A0A9C7900E16D8F /* Images.xcassets */,
-				240E26071A0A239300B2003A /* TestFlightSDK3.0.2 */,
 				6F7A9EFD171A1732004B1575 /* RoboRoach */,
 				6F7A9EF6171A1732004B1575 /* Frameworks */,
 				6F7A9EF5171A1732004B1575 /* Products */,
@@ -339,8 +298,6 @@
 				240E26151A0A2CFB00B2003A /* MobileCoreServices.framework */,
 				240E26131A0A2CE400B2003A /* CoreMedia.framework */,
 				240E26111A0A2CCD00B2003A /* CoreVideo.framework */,
-				240E26051A0A22BB00B2003A /* SensibleTableView.framework */,
-				6F5BCAD518255B5400B77AFE /* TestFlight */,
 				6F280B07173307DA00BDBDF8 /* libz.dylib */,
 				6FBAF5661724428F00C8E3D1 /* UIKit.framework */,
 				6F7A9F2D171A5CD3004B1575 /* CoreBluetooth.framework */,
@@ -446,7 +403,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = BYB;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Backyard Brains";
 				TargetAttributes = {
 					6F7A9EF3171A1732004B1575 = {
@@ -562,12 +519,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				240E26101A0A239300B2003A /* release_notes.md in Sources */,
 				6F7A9F04171A1732004B1575 /* main.m in Sources */,
 				6F7A9F08171A1732004B1575 /* BYBAppDelegate.m in Sources */,
 				6F7A9F2C171A338C004B1575 /* BYBRoboRoachViewController.m in Sources */,
 				2407C43D1AE574B5005D671B /* OBSlider.m in Sources */,
-				240E260F1A0A239300B2003A /* README.md in Sources */,
 				6F7A9F31171A64C0004B1575 /* BYBRoboRoachManager.m in Sources */,
 				6F938D24171F32EF0084E06A /* BYBRoboRoachSettingsViewController.m in Sources */,
 				6F938D2D171F42A10084E06A /* BYBRoboRoach.m in Sources */,
@@ -599,6 +554,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -612,7 +568,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos8.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -638,7 +594,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7CA3C4FB-D3A1-49F2-9BFD-CB65E77FCD89";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos8.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -671,7 +627,7 @@
 					"/Users/nik/Desktop/Projects/GPUImage/framework/**",
 				);
 				INFOPLIST_FILE = "RoboRoach/OptoStimmer-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/gagegreg/Dropbox/Backyard,
@@ -685,6 +641,7 @@
 					"$(PROJECT_DIR)/TestFlightSDK3.0.2",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.backyardbrains.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -719,7 +676,7 @@
 					"/Users/nik/Desktop/Projects/GPUImage/framework/**",
 				);
 				INFOPLIST_FILE = "RoboRoach/OptoStimmer-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/gagegreg/Dropbox/Backyard,
@@ -733,9 +690,10 @@
 					"$(PROJECT_DIR)/TestFlightSDK3.0.2",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.backyardbrains.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "387fcc40-acdd-4eca-8f7d-324f8e76b0e6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "06a02f30-6ff6-4467-8ac3-ab9eb505bdb5";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

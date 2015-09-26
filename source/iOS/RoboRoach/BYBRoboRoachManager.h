@@ -71,7 +71,7 @@
 
 -(UInt16) swap:(UInt16)s ;
 -(const char *) CBUUIDToString:(CBUUID *) UUID ;
--(const char *) UUIDToString:(CFUUIDRef)UUID ;
+-(const char *) UUIDToString:(NSUUID*)UUID;
 -(int) compareCBUUID:(CBUUID *) UUID1 UUID2:(CBUUID *)UUID2;
 -(int) compareCBUUIDToInt:(CBUUID *)UUID1 UUID2:(UInt16)UUID2 ;
 -(UInt16) CBUUIDToInt:(CBUUID *) UUID;
